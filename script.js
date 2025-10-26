@@ -19,8 +19,8 @@ let lastLessonIndex = localStorage.getItem('lastLessonIndex');
 
 // Lesson data (easy to extend)
 const lessons = [
-  { type: 'mindmap', title: 'Sinh trưởng vi sinh vật', idx: 1, image: '../img/sinh-truong-vi-sinh-vat.png' },
-  { type: 'mindmap', title: 'Sinh sản vi sinh vật', idx: 2, image: '../img/sinh-san-vsv.png' }
+  { type: 'mindmap', title: 'Sinh trưởng vi sinh vật', idx: 1, image: './img/sinh-truong-vi-sinh-vat.png' },
+  { type: 'mindmap', title: 'Sinh sản vi sinh vật', idx: 2, image: './img/sinh-san-vsv.png' }
   // Add more here...
 ];
 

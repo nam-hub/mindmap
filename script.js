@@ -1,323 +1,174 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+// Elements
+const lessonList = document.getElementById('lessonList');
+const sidebar = document.getElementById('sidebar');
+const menuToggle = document.getElementById('menuToggle');
+const lessonImage = document.getElementById('lessonImage');
+const mindmapTitle = document.getElementById('mindmapTitle');
+const mindmapContainer = document.getElementById('mindmapContainer');
+const title = document.getElementById('lessonTitle');
+const modal = document.getElementById('modal');
+const modalImage = document.getElementById('modalImage');
+const closeModal = document.querySelector('.close');
+
+// Storage
+let lastLessonIndex = localStorage.getItem('lastLessonIndex');
+
+// Lesson data (easy to extend)
+const lessons = [
+  { type: 'mindmap', title: 'Sinh trưởng vi sinh vật', idx: 1, image: 'img/sinh-truong-vi-sinh-vat.png' },
+  { type: 'mindmap', title: 'Sinh sản vi sinh vật', idx: 2, image: 'img/sinh-san-vsv.png' }
+  // Add more here...
+];
+
+let currentScale = 1;
+const minScale = 0.5;
+const maxScale = 3;
+const scaleStep = 0.1;
+let isDragging = false;
+let startX, startY, translateX = 0, translateY = 0;
+
+// Render lesson list
+function renderLessons() {
+  lessonList.innerHTML = '';
+  lessons.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.classList.add('lesson');
+    div.dataset.id = i;
+    const titleSpan = document.createElement('span');
+    titleSpan.textContent = item.title;
+    div.appendChild(titleSpan);
+    div.onclick = () => {
+      selectLesson(i);
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('open');
+        menuToggle.classList.remove('active');
+      }
+    };
+    lessonList.appendChild(div);
+  });
 }
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #f5f7fa 0%, #d4ddea 70%, #c3cfe2 100%);
-  color: #333;
-  overflow-x: hidden;
-  transition: background 0.5s ease;
+// Select lesson
+let currentLesson = null;
+
+function selectLesson(i) {
+  if (i < 0 || i >= lessons.length) return;
+  currentLesson = i;
+  title.textContent = lessons[i].title;
+  mindmapTitle.textContent = lessons[i].title;
+  document.querySelectorAll('.lesson').forEach(el => el.classList.remove('active'));
+  const selected = lessonList.querySelector(`.lesson:nth-child(${i + 1})`);
+  if (selected) selected.classList.add('active');
+
+  // Set image src with loading effect
+  lessonImage.classList.remove('loaded');
+  lessonImage.src = lessons[i].image;
+  lessonImage.onload = () => {
+    lessonImage.classList.add('loaded');
+  };
+  currentScale = 1;
+  translateX = 0;
+  translateY = 0;
+  applyZoom();
 }
 
-/* === NAV BAR === */
-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(135deg, #d4ddea 0%, #b0c4de 100%);
-  color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 30px;
-  z-index: 1000;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+// Apply zoom to main image
+function applyZoom() {
+  lessonImage.style.transform = `scale(${currentScale})`;
+  lessonImage.style.transition = 'transform 0.3s ease';
 }
 
-.nav-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  flex-grow: 1;
-  letter-spacing: 1.5px;
-  color: #2b3a55;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+// Apply zoom and pan to modal image
+function applyModalZoom() {
+  modalImage.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+  modalImage.style.transition = isDragging ? 'none' : 'transform 0.3s ease';
 }
 
-.menu-toggle {
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 30px;
-  height: 20px;
-}
-
-.menu-toggle span {
-  background: #2b3a55;
-  height: 3px;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-.menu-toggle.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.menu-toggle.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.menu-toggle.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -7px);
-}
-
-/* === SIDEBAR === */
-.sidebar {
-  position: fixed;
-  top: 70px;
-  left: 0;
-  width: 280px;
-  height: calc(100vh - 70px);
-  background: rgba(255, 255, 255, 0.95);
-  padding: 20px;
-  transform: translateX(-100%);
-  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-}
-
-.sidebar.open {
-  transform: translateX(0);
-}
-
-.sidebar h3 {
-  font-size: 1.4rem;
-  color: #2b3a55;
-  margin-bottom: 20px;
-  text-align: center;
-  animation: fadeIn 0.5s ease;
-}
-
-.lesson {
-  display: flex;
-  align-items: center;
-  padding: 12px 15px;
-  margin: 10px 0;
-  background: linear-gradient(135deg, #fff, #e6eef8);
-  border-radius: 15px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
-  animation: slideIn 0.5s ease forwards;
-}
-
-.lesson:hover {
-  background: linear-gradient(135deg, #b0c4de, #d4ddea);
-  color: #2b3a55;
-  transform: scale(1.05) rotate(2deg);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-}
-
-.lesson.active {
-  background: linear-gradient(135deg, #2b3a55, #4a6fa5);
-  color: #fff;
-  transform: scale(1.05);
-}
-
-.lesson span {
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* === MAIN === */
-main {
-  margin-top: 70px;
-  padding: 20px;
-  transition: margin-left 0.4s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 70px);
-}
-
-.sidebar.open ~ main {
-  margin-left: 280px;
-}
-
-.mindmap-container {
-  position: relative;
-  max-width: 80%;
-  text-align: center;
-  cursor: zoom-in;
-  transition: transform 0.3s ease;
-}
-
-.mindmap-image {
-  max-width: 100%;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: 0;
-  transform: scale(0.95);
-}
-
-.mindmap-image.loaded {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.mindmap-container:hover .mindmap-image {
-  transform: scale(1.02);
-}
-
-.image-overlay {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: rgba(43, 58, 85, 0.8);
-  padding: 10px 20px;
-  border-radius: 10px;
-  color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.image-overlay h2 {
-  font-size: 1.4rem;
-  font-weight: 700;
-}
-
-/* === MODAL === */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  padding-top: 60px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.9);
-  cursor: move;
-}
-
-.modal-content {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 1200px;
-  transition: transform 0.3s ease;
-  transform-origin: center;
-  position: relative;
-}
-
-.close {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.close:hover,
-.close:focus {
-  color: #bbb;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* === BACK BUTTON === */
-.back-btn {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #2b3a55, #4a6fa5);
-  border: none;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s, box-shadow 0.3s;
-  z-index: 9999;
-}
-
-.back-btn:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
-}
-
-.back-btn:active {
-  transform: scale(0.95);
-}
-
-.back-btn svg {
-  width: 28px;
-  height: 28px;
-  fill: #fff;
-}
-
-/* === SCROLLBAR === */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #e6eef8;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #2b3a55;
-  border-radius: 10px;
-}
-
-/* === RESPONSIVE === */
-@media (max-width: 768px) {
-  .sidebar {
-    width: 100%;
-    top: 60px;
-    height: calc(100vh - 60px);
-    padding: 15px;
+// Scroll zoom in modal
+modal.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  if (e.deltaY < 0 && currentScale < maxScale) {
+    // Scroll up to zoom in
+    currentScale += scaleStep;
+  } else if (e.deltaY > 0 && currentScale > minScale) {
+    // Scroll down to zoom out
+    currentScale -= scaleStep;
   }
+  applyModalZoom();
+});
 
-  .sidebar.open ~ main {
-    margin-left: 0;
+// Panning in modal
+modalImage.addEventListener('mousedown', (e) => {
+  if (currentScale > 1) { // Only allow panning when zoomed in
+    isDragging = true;
+    startX = e.clientX - translateX;
+    startY = e.clientY - translateY;
+    modalImage.style.cursor = 'grabbing';
   }
+});
 
-  .mindmap-container {
-    max-width: 100%;
+modalImage.addEventListener('mousemove', (e) => {
+  if (isDragging) {
+    translateX = e.clientX - startX;
+    translateY = e.clientY - startY;
+    applyModalZoom();
   }
+});
 
-  .nav-title {
-    font-size: 1.2rem;
-  }
+modalImage.addEventListener('mouseup', () => {
+  isDragging = false;
+  modalImage.style.cursor = 'move';
+});
 
-  .modal-content {
-    width: 95%;
+modalImage.addEventListener('mouseleave', () => {
+  isDragging = false;
+  modalImage.style.cursor = 'move';
+});
+
+// Modal zoom on click
+mindmapContainer.onclick = (e) => {
+  modal.style.display = 'block';
+  modalImage.src = lessonImage.src;
+  currentScale = 1;
+  translateX = 0;
+  translateY = 0;
+  applyModalZoom();
+};
+
+closeModal.onclick = () => {
+  modal.style.display = 'none';
+  isDragging = false;
+  modalImage.style.cursor = 'move';
+};
+
+window.onclick = (event) => {
+  if (event.target == modal) {
+    modal.style.display = 'none';
+    isDragging = false;
+    modalImage.style.cursor = 'move';
   }
+};
+
+// Menu toggle
+menuToggle.onclick = () => {
+  sidebar.classList.toggle('open');
+  menuToggle.classList.toggle('active');
+};
+
+// Initial render
+renderLessons();
+
+// Restore last selected lesson
+if (lastLessonIndex !== null) {
+  const idx = Number(lastLessonIndex);
+  if (!isNaN(idx) && idx >= 0 && idx < lessons.length) {
+    setTimeout(() => selectLesson(idx), 100);
+  }
+} else {
+  setTimeout(() => selectLesson(0), 100);
 }
 
-@media (max-width: 480px) {
-  nav {
-    padding: 10px 20px;
-  }
-
-  .lesson {
-    padding: 10px;
-    font-size: 0.9rem;
-  }
-
-  .mindmap-container {
-    max-width: 100%;
-  }
-}
+// Save last lesson on page leave
+window.addEventListener('beforeunload', () => {
+  if (currentLesson !== null) localStorage.setItem('lastLessonIndex', currentLesson);
+});

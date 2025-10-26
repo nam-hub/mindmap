@@ -6,13 +6,9 @@ const lessonImage = document.getElementById('lessonImage');
 const mindmapTitle = document.getElementById('mindmapTitle');
 const mindmapContainer = document.getElementById('mindmapContainer');
 const title = document.getElementById('lessonTitle');
-const searchInput = document.getElementById('searchInput');
 const modal = document.getElementById('modal');
 const modalImage = document.getElementById('modalImage');
 const closeModal = document.querySelector('.close');
-const zoomIn = document.getElementById('zoomIn');
-const zoomOut = document.getElementById('zoomOut');
-const resetZoom = document.getElementById('resetZoom');
 
 // Storage
 let lastLessonIndex = localStorage.getItem('lastLessonIndex');
@@ -25,11 +21,16 @@ const lessons = [
 ];
 
 let currentScale = 1;
+const minScale = 0.5;
+const maxScale = 3;
+const scaleStep = 0.1;
+let isDragging = false;
+let startX, startY, translateX = 0, translateY = 0;
 
 // Render lesson list
-function renderLessons(filter = '') {
+function renderLessons() {
   lessonList.innerHTML = '';
-  lessons.filter(item => item.title.toLowerCase().includes(filter.toLowerCase())).forEach((item, i) => {
+  lessons.forEach((item, i) => {
     const div = document.createElement('div');
     div.classList.add('lesson');
     div.dataset.id = i;
@@ -56,7 +57,7 @@ function selectLesson(i) {
   title.textContent = lessons[i].title;
   mindmapTitle.textContent = lessons[i].title;
   document.querySelectorAll('.lesson').forEach(el => el.classList.remove('active'));
-  const selected = lessonList.querySelector(`.lesson:nth-child(${i+1})`);
+  const selected = lessonList.querySelector(`.lesson:nth-child(${i + 1})`);
   if (selected) selected.classList.add('active');
 
   // Set image src with loading effect
@@ -66,47 +67,85 @@ function selectLesson(i) {
     lessonImage.classList.add('loaded');
   };
   currentScale = 1;
+  translateX = 0;
+  translateY = 0;
   applyZoom();
-
-  localStorage.setItem('lastLessonIndex', currentLesson);
 }
 
-// Apply zoom
+// Apply zoom to main image
 function applyZoom() {
   lessonImage.style.transform = `scale(${currentScale})`;
+  lessonImage.style.transition = 'transform 0.3s ease';
 }
 
-// Zoom controls
-zoomIn.onclick = () => {
-  currentScale += 0.1;
-  applyZoom();
-};
+// Apply zoom and pan to modal image
+function applyModalZoom() {
+  modalImage.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+  modalImage.style.transition = isDragging ? 'none' : 'transform 0.3s ease';
+}
 
-zoomOut.onclick = () => {
-  if (currentScale > 0.5) {
-    currentScale -= 0.1;
-    applyZoom();
+// Scroll zoom in modal
+modal.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  if (e.deltaY < 0 && currentScale < maxScale) {
+    // Scroll up to zoom in
+    currentScale += scaleStep;
+  } else if (e.deltaY > 0 && currentScale > minScale) {
+    // Scroll down to zoom out
+    currentScale -= scaleStep;
   }
-};
+  applyModalZoom();
+});
 
-resetZoom.onclick = () => {
-  currentScale = 1;
-  applyZoom();
-};
+// Panning in modal
+modalImage.addEventListener('mousedown', (e) => {
+  if (currentScale > 1) { // Only allow panning when zoomed in
+    isDragging = true;
+    startX = e.clientX - translateX;
+    startY = e.clientY - translateY;
+    modalImage.style.cursor = 'grabbing';
+  }
+});
+
+modalImage.addEventListener('mousemove', (e) => {
+  if (isDragging) {
+    translateX = e.clientX - startX;
+    translateY = e.clientY - startY;
+    applyModalZoom();
+  }
+});
+
+modalImage.addEventListener('mouseup', () => {
+  isDragging = false;
+  modalImage.style.cursor = 'move';
+});
+
+modalImage.addEventListener('mouseleave', () => {
+  isDragging = false;
+  modalImage.style.cursor = 'move';
+});
 
 // Modal zoom on click
-mindmapContainer.onclick = () => {
-  modal.style.display = "block";
+mindmapContainer.onclick = (e) => {
+  modal.style.display = 'block';
   modalImage.src = lessonImage.src;
+  currentScale = 1;
+  translateX = 0;
+  translateY = 0;
+  applyModalZoom();
 };
 
 closeModal.onclick = () => {
-  modal.style.display = "none";
+  modal.style.display = 'none';
+  isDragging = false;
+  modalImage.style.cursor = 'move';
 };
 
 window.onclick = (event) => {
   if (event.target == modal) {
-    modal.style.display = "none";
+    modal.style.display = 'none';
+    isDragging = false;
+    modalImage.style.cursor = 'move';
   }
 };
 
@@ -115,23 +154,6 @@ menuToggle.onclick = () => {
   sidebar.classList.toggle('open');
   menuToggle.classList.toggle('active');
 };
-
-// Search functionality
-searchInput.addEventListener('input', (e) => {
-  renderLessons(e.target.value);
-});
-
-// Keyboard navigation
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight' && currentLesson < lessons.length - 1) {
-    selectLesson(currentLesson + 1);
-  } else if (e.key === 'ArrowLeft' && currentLesson > 0) {
-    selectLesson(currentLesson - 1);
-  } else if (e.key === '/' && document.activeElement !== searchInput) {
-    searchInput.focus();
-    e.preventDefault();
-  }
-});
 
 // Initial render
 renderLessons();

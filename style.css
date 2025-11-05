@@ -218,13 +218,14 @@ main {
 }
 
 .close {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  transition: 0.3s;
+position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #892525;
+    font-size: 70px;
+    font-weight: bold;
+    transition: 0.3s;
+    z-index: 11;
 }
 
 .close:hover,

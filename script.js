@@ -21,8 +21,8 @@ const lessons = [
   { type: 'mindmap', title: 'Dinh dưỡng vi sinh vật', idx: 4, image: 'img/sdtd-dinh-duong-vsv.png' },
   { type: 'mindmap', title: 'Khái quát sinh học thực vật', idx: 5, image: 'img/sdtd-khai-quat-sinh-hoc-thuc-vat.png' },
   { type: 'mindmap', title: 'Cấu tạo vi sinh vật', idx: 6, image: 'img/sdtd-cau-tao-vsv.png' },
-  { type: 'mindmap', title: 'Quang hợp và trao đổi khí ở thực vật', idx: 7, image: 'img/sdtd-quang-hop-va-trao-doi-khi-o-thuc-vat' },
-    { type: 'mindmap', title: 'Nghiên cứu khả năng lọc không khí của các loài cây xanh phổ biên', idx: 8, image: 'img/sdtd-nghien-cuu-kha-nang-loc-khong-khi-cua-cac-loai-cay-xanh-pho-bien-trong-cay-trong' },
+  { type: 'mindmap', title: 'Quang hợp và trao đổi khí ở thực vật', idx: 7, image: 'img/sdtd-quang-hop-va-trao-doi-khi-o-thuc-vat.png' },
+    { type: 'mindmap', title: 'Nghiên cứu khả năng lọc không khí của các loài cây xanh phổ biên', idx: 8, image: 'img/sdtd-nghien-cuu-kha-nang-loc-khong-khi-cua-cac-loai-cay-xanh-pho-bien-trong-cay-trong.png' },
     { type: 'mindmap', title: 'Sinh sản ở thực vật', idx: 9, image: 'img/sdtd-sinh-san-o-thuc-vat.png' }
 
 

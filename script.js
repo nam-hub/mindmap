@@ -16,7 +16,12 @@ let lastLessonIndex = localStorage.getItem('lastLessonIndex');
 // Lesson data (easy to extend)
 const lessons = [
   { type: 'mindmap', title: 'Sinh trưởng vi sinh vật', idx: 1, image: 'img/sinh-truong-vi-sinh-vat.png' },
-  { type: 'mindmap', title: 'Sinh sản vi sinh vật', idx: 2, image: 'img/sinh-san-vsv.png' }
+  { type: 'mindmap', title: 'Sinh sản vi sinh vật', idx: 2, image: 'img/sinh-san-vsv.png' },
+  { type: 'mindmap', title: 'Khái quát vi sinh vật', idx: 3, image: 'img/sdtd-khai-quat-vsv.png' },
+  { type: 'mindmap', title: 'Dinh dưỡng vi sinh vật', idx: 4, image: 'img/sdtd-dinh-duong-vsv.png' },
+  { type: 'mindmap', title: 'Khái quát sinh học thực vật', idx: 5, image: 'img/sdtd-khai-quat-sinh-hoc-thuc-vat.png' },
+  { type: 'mindmap', title: 'Cấu tạo vi sinh vật', idx: 6, image: 'img/sdtd-cau-tao-vsv.png' }
+
   // Add more here...
 ];
 

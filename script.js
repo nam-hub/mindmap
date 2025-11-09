@@ -1,4 +1,4 @@
-// Elements
+
 const lessonList = document.getElementById('lessonList');
 const sidebar = document.getElementById('sidebar');
 const menuToggle = document.getElementById('menuToggle');

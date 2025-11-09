@@ -22,8 +22,13 @@ const lessons = [
   { type: 'mindmap', title: 'Khái quát sinh học thực vật', idx: 5, image: 'img/sdtd-khai-quat-sinh-hoc-thuc-vat.png' },
   { type: 'mindmap', title: 'Cấu tạo vi sinh vật', idx: 6, image: 'img/sdtd-cau-tao-vsv.png' },
   { type: 'mindmap', title: 'Quang hợp và trao đổi khí ở thực vật', idx: 7, image: 'img/sdtd-quang-hop-va-trao-doi-khi-o-thuc-vat.png' },
-    { type: 'mindmap', title: 'Nghiên cứu khả năng lọc không khí của các loài cây xanh phổ biên', idx: 8, image: 'img/sdtd-nghien-cuu-kha-nang-loc-khong-khi-cua-cac-loai-cay-xanh-pho-bien-trong-cay-trong.png' },
-    { type: 'mindmap', title: 'Sinh sản ở thực vật', idx: 9, image: 'img/sdtd-sinh-san-o-thuc-vat.png' }
+  { type: 'mindmap', title: 'Nghiên cứu khả năng lọc không khí của các loài cây xanh phổ biên', idx: 8, image: 'img/sdtd-nghien-cuu-kha-nang-loc-khong-khi-cua-cac-loai-cay-xanh-pho-bien-trong-cay-trong.png' },
+  { type: 'mindmap', title: 'Sinh sản ở thực vật', idx: 9, image: 'img/sdtd-sinh-san-o-thuc-vat.png' },
+  { type: 'mindmap', title: 'Đột biến sinh học', idx: 10, image: 'img/sdtd-dot-bien-sinh-hoc.png' },
+  { type: 'mindmap', title: 'Ba định luật Mendel', idx: 11, image: 'img/sdtd-mendel.png' },
+  { type: 'mindmap', title: 'Khái quát di truyền học', idx: 12, image: 'img/sdtd-khai-quat-di-truyen-học.png' },
+  { type: 'mindmap', title: 'Phiên mã dịch mã', idx: 13, image: 'img/sđtd-Phien-ma-va-Dich-ma.png' }
+
 
 
 
@@ -182,4 +187,19 @@ if (lastLessonIndex !== null) {
 // Save last lesson on page leave
 window.addEventListener('beforeunload', () => {
   if (currentLesson !== null) localStorage.setItem('lastLessonIndex', currentLesson);
+});
+
+// Tìm kiếm trong sidebar
+document.getElementById('searchInput')?.addEventListener('input', function(e) {
+  const query = e.target.value.toLowerCase().trim();
+  const lessons = document.querySelectorAll('.lesson');
+
+  lessons.forEach(lesson => {
+    const text = lesson.textContent.toLowerCase();
+    if (text.includes(query)) {
+      lesson.style.display = 'flex';
+    } else {
+      lesson.style.display = 'none';
+    }
+  });
 });

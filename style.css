@@ -65,6 +65,69 @@ nav {
 .menu-toggle.active span:nth-child(3) {
   transform: rotate(-45deg) translate(7px, -7px);
 }
+/* search box */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgb(179, 186, 223);
+    border-radius: 25px;
+    padding: 5px 12px;
+    box-shadow: 0 2px 8px rgb(43 156 239 / 100%);
+    transition: all 0.4s ease;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.search-container:focus-within {
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}
+
+#searchInput {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  padding: 8px 10px 8px 5px;
+  font-size: 0.95rem;
+  color: #2b3a55;
+  font-family: 'Poppins', sans-serif;
+}
+
+#searchInput::placeholder {
+  color: #4d4961;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.search-icon {
+  width: 18px;
+  height: 18px;
+  fill: #2b3a55;
+  flex-shrink: 0;
+}
+
+/* Ẩn tiêu đề khi tìm kiếm (tùy chọn, nếu muốn gọn hơn trên mobile) */
+@media (max-width: 768px) {
+  .search-container {
+    padding: 4px 10px;
+  }
+
+  #searchInput {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+
+
+  .nav-title {
+    font-size: 1.1rem;
+  }
+}
 
 /* === SIDEBAR === */
 .sidebar {

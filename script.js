@@ -27,7 +27,11 @@ const lessons = [
   { type: 'mindmap', title: 'Đột biến sinh học', idx: 10, image: 'img/sdtd-dot-bien-sinh-hoc.png' },
   { type: 'mindmap', title: 'Ba định luật Mendel', idx: 11, image: 'img/sdtd-mendel.png' },
   { type: 'mindmap', title: 'Khái quát di truyền học', idx: 12, image: 'img/sdtd-khai-quat-di-truyen-học.png' },
-  { type: 'mindmap', title: 'Phiên mã dịch mã', idx: 13, image: 'img/sđtd-Phien-ma-va-Dich-ma.png' }
+  { type: 'mindmap', title: 'Phiên mã dịch mã', idx: 13, image: 'img/sđtd-Phien-ma-va-Dich-ma.png' },
+  { type: 'mindmap', title: 'SỰ HẤP THỤ NƯỚC VÀ MUỐI KHOÁNG CỦA THỰC VẬT', idx: 14, image: 'img/Su-HaP-THu-NuoC-Va-MUoI-KHOaNG-CuA-THuC-VaT.png' },
+  { type: 'mindmap', title: 'di truyền liên kết giới tính,cơ chế di truyền ở người và ứng dụng', idx: 15, image: 'img/di-truyen-lien-ket-gioi-tinh--co-che-di-truyen-o-nguoi-va-ung-dung.png' },
+  { type: 'mindmap', title: 'Khái quát động vật', idx: 16, image: 'img/khai-quat-sinh-hoc-dong-vat.png' }
+  
 
 
 
@@ -202,4 +206,5 @@ document.getElementById('searchInput')?.addEventListener('input', function(e) {
       lesson.style.display = 'none';
     }
   });
+
 });

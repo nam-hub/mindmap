@@ -28,9 +28,10 @@ const lessons = [
   { type: 'mindmap', title: 'Ba định luật Mendel', idx: 11, image: 'img/sdtd-mendel.png' },
   { type: 'mindmap', title: 'Khái quát di truyền học', idx: 12, image: 'img/sdtd-khai-quat-di-truyen-học.png' },
   { type: 'mindmap', title: 'Phiên mã dịch mã', idx: 13, image: 'img/sđtd-Phien-ma-va-Dich-ma.png' },
-  { type: 'mindmap', title: 'SỰ HẤP THỤ NƯỚC VÀ MUỐI KHOÁNG CỦA THỰC VẬT', idx: 14, image: 'img/Su-HaP-THu-NuoC-Va-MUoI-KHOaNG-CuA-THuC-VaT.png' },
-  { type: 'mindmap', title: 'di truyền liên kết giới tính,cơ chế di truyền ở người và ứng dụng', idx: 15, image: 'img/di-truyen-lien-ket-gioi-tinh--co-che-di-truyen-o-nguoi-va-ung-dung.png' },
-  { type: 'mindmap', title: 'Khái quát động vật', idx: 16, image: 'img/khai-quat-sinh-hoc-dong-vat.png' }
+  { type: 'mindmap', title: 'Sự hấp thụ nước và muối khoáng của thực vật', idx: 14, image: 'img/Su-HaP-THu-NuoC-Va-MUoI-KHOaNG-CuA-THuC-VaT.png' },
+  { type: 'mindmap', title: 'Di truyền liên kết giới tính,cơ chế di truyền ở người và ứng dụng', idx: 15, image: 'img/di-truyen-lien-ket-gioi-tinh--co-che-di-truyen-o-nguoi-va-ung-dung.png' },
+  { type: 'mindmap', title: 'Khái quát động vật', idx: 16, image: 'img/khai-quat-sinh-hoc-dong-vat.png' },
+  { type: 'mindmap', title: 'Sự tiến hóa của động vật từ đơn giản đến phức tạp', idx: 17, image: 'img/sdtd-su-tien-hoa-dv-tu-co-ban-den-pt.png' }
   
 
 
@@ -75,7 +76,7 @@ function selectLesson(i) {
   if (i < 0 || i >= lessons.length) return;
   currentLesson = i;
   title.textContent = lessons[i].title;
-  mindmapTitle.textContent = lessons[i].title;
+  // mindmapTitle.textContent = lessons[i].title;
   document.querySelectorAll('.lesson').forEach(el => el.classList.remove('active'));
   const selected = lessonList.querySelector(`.lesson:nth-child(${i + 1})`);
   if (selected) selected.classList.add('active');

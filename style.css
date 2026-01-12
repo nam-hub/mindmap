@@ -26,6 +26,8 @@ nav {
   padding: 15px 30px;
   z-index: 1000;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+     min-height: 80px;
+    max-height: 80px;
 }
 
 .nav-title {
@@ -132,7 +134,7 @@ nav {
 /* === SIDEBAR === */
 .sidebar {
   position: fixed;
-  top: 70px;
+  top: 80px;
   left: 0;
   width: 280px;
   height: calc(100vh - 70px);
@@ -146,7 +148,7 @@ nav {
 
 .sidebar.open {
   transform: translateX(0);
-  z-index:100000;
+  z-index:10000;
 }
 
 .sidebar h3 {
@@ -374,8 +376,8 @@ position: fixed;
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
-    top: 60px;
-    height: calc(100vh - 60px);
+    top: 80px;
+height: calc(100vh);
     padding: 15px;
   }
 
@@ -395,6 +397,10 @@ position: fixed;
     width: 95%;
     top: 20%;
   }
+  .nav{
+    min-height: 80px;
+    max-height: 80px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -410,6 +416,14 @@ position: fixed;
   .mindmap-container {
     max-width: 100%;
   }
+    .sidebar {
+    width: 100%;
+    top: 80px;
+height: calc(100vh);
+    padding: 15px;
+  }
+    .nav{
+    min-height: 80px;
+    max-height: 80px;
+  }
 }
-
-

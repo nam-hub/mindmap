@@ -239,7 +239,7 @@ main {
   transform: scale(1.02);
 }
 
-.image-overlay {
+/* .image-overlay {
   position: absolute;
   top: 20px;
   left: 20px;
@@ -253,7 +253,7 @@ main {
 .image-overlay h2 {
   font-size: 1.4rem;
   font-weight: 700;
-}
+} */
 
 /* === MODAL === */
 .modal {
@@ -273,7 +273,7 @@ main {
 .modal-content {
   margin: auto;
   display: block;
-  width: 80%;
+  width: 100%;
   max-width: 1200px;
   transition: transform 0.3s ease;
   transform-origin: center;
@@ -281,10 +281,10 @@ main {
 }
 
 .close {
-position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #892525;
+position: fixed;
+    top: -2%;
+    right: 2%;
+    color: #feb6b6ea;
     font-size: 70px;
     font-weight: bold;
     transition: 0.3s;
@@ -305,21 +305,45 @@ position: absolute;
   right: 30px;
   width: 60px;
   height: 60px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #2b3a55, #4a6fa5);
+    border-radius: 50% 50% 0 50%;
+    background: linear-gradient(135deg, #2b3a55, #4a6fa5);
   border: none;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s, box-shadow 0.3s;
+  transition: all 0.5s ease;
   z-index: 9999;
+    animation: bounce 1s infinite ease-in-out;
+}
+
+  @keyframes bounce {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-30px);
+  }
+  40% {
+    transform: translateX(0);
+  }
+  60% {
+    transform: translateX(-20px);
+  }
+  80% {
+    transform: translateX(0);
+  }
+
+
 }
 
 .back-btn:hover {
-  transform: translateY(-5px) scale(1.05);
+  transform: translateY(-5px) scale(1.09);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+  transform: rotate(180deg);
+      border-radius: 40% 20% 20% 20%;
+
 }
 
 .back-btn:active {
@@ -369,6 +393,7 @@ position: absolute;
 
   .modal-content {
     width: 95%;
+    top: 20%;
   }
 }
 

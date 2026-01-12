@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-body {
+body { 
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, #f5f7fa 0%, #d4ddea 70%, #c3cfe2 100%);
   color: #333;
@@ -427,4 +427,5 @@ height: calc(100vh);
     max-height: 80px;
   }
 }
+
 
